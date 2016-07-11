@@ -18,6 +18,8 @@ public class HyperProvisioner {
 	}
 
 	public void launchBuildContainer(Launcher launcher, TaskListener listener) {
-		driver.createAndLaunchBuildContainer(launcher, "busybox");
+		ContainerInstance targetContainer = driver.createAndLaunchBuildContainer(launcher, "busybox");
+		
+		driver.execInContainer(launcher, targetContainer.getId());
 	}
 }
