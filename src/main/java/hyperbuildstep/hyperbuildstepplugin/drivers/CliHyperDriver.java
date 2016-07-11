@@ -1,0 +1,52 @@
+package hyperbuildstep.hyperbuildstepplugin.drivers;
+
+import hudson.Launcher;
+import hudson.Proc;
+import hyperbuildstep.hyperbuildstepplugin.HyperDriver;
+import hudson.util.ArgumentListBuilder;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+public class CliHyperDriver implements HyperDriver {
+
+	@Override
+	public void createAndLaunchBuildContainer(Launcher launcher, String image) {
+		ArgumentListBuilder args = new ArgumentListBuilder()
+			.add("create")
+			.add(image);
+
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+			launchHyperCLI(launcher, args)
+				.stdout(out).stderr(launcher.getListener().getLogger()).join();
+			} catch (Exception e) {
+
+			}
+
+			String containerId = "";
+			try {
+			containerId = out.toString("UTF-8").trim();
+			} catch (Exception e) {
+
+			}
+
+			try {
+			launchHyperCLI(launcher, new ArgumentListBuilder()
+				.add("start", containerId)).stdout(out).stderr(launcher.getListener().getLogger()).join();
+			} catch (Exception e) {
+
+			}
+	}
+
+	public void prependArgs(ArgumentListBuilder args) {
+		args.prepend("hyper");
+	}
+
+	private Launcher.ProcStarter launchHyperCLI(Launcher launcher, ArgumentListBuilder args) {
+		prependArgs(args);
+
+		return launcher.launch()
+				.cmds(args);
+	}
+}
