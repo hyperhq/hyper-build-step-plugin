@@ -5,6 +5,8 @@ import hudson.Launcher;
 import hudson.Proc;
 import hudson.model.TaskListener;
 
+import java.io.IOException;
+
 public class HyperProvisioner {
 
 	protected final HyperDriver driver;
@@ -13,15 +15,17 @@ public class HyperProvisioner {
 		this.driver = new CliHyperDriver();
 	}
 
-	public void launchBuildProcess(Launcher launcher, TaskListener listener, String image, String commands) {
+	public void launchBuildProcess(Launcher launcher, TaskListener listener, String image, String commands) throws IOException, InterruptedException {
 		ContainerInstance targetContainer = launchBuildContainer(launcher, listener, image);
 
-		driver.execInContainer(launcher, targetContainer.getId(), commands);
+		int status = driver.execInContainer(launcher, targetContainer.getId(), commands);
 
-		driver.removeContainer(launcher, targetContainer.getId());
+		if (status == 0) {
+			driver.removeContainer(launcher, targetContainer.getId());
+		}	
 	}
 
-	public ContainerInstance launchBuildContainer(Launcher launcher, TaskListener listener, String image) {
+	public ContainerInstance launchBuildContainer(Launcher launcher, TaskListener listener, String image) throws IOException, InterruptedException {
 		return driver.createAndLaunchBuildContainer(launcher, image);
 
 	}

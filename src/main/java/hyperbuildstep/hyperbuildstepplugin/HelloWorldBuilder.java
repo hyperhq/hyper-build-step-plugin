@@ -69,7 +69,11 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
         else
             listener.getLogger().println("Hello, "+name+"!");*/
         HyperProvisioner provisioner = new HyperProvisioner();
-        provisioner.launchBuildProcess(launcher, listener, image, commands);
+        try {
+            provisioner.launchBuildProcess(launcher, listener, image, commands);
+        } catch (Exception e) {
+            
+        }
 
     }
 

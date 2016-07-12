@@ -12,74 +12,62 @@ import java.io.IOException;
 public class CliHyperDriver implements HyperDriver {
 
 	@Override
-	public ContainerInstance createAndLaunchBuildContainer(Launcher launcher, String image) {
+	public ContainerInstance createAndLaunchBuildContainer(Launcher launcher, String image) throws IOException, InterruptedException {
 		ArgumentListBuilder args = new ArgumentListBuilder()
 			.add("create")
 			.add(image);
 
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try {
-			launchHyperCLI(launcher, args)
+			int status = launchHyperCLI(launcher, args)
 				.stdout(out).stderr(launcher.getListener().getLogger()).join();
-			} catch (Exception e) {
 
+			if (status != 0) {
+				throw new IOException("Failed to create container");
 			}
 
-			String containerId = "";
-			try {
-			containerId = out.toString("UTF-8").trim();
-			} catch (Exception e) {
-
-			}
+			String containerId = out.toString("UTF-8").trim();
 
 			ContainerInstance buildContainer = new ContainerInstance(containerId);
 
-			try {
-			launchHyperCLI(launcher, new ArgumentListBuilder()
+			status = launchHyperCLI(launcher, new ArgumentListBuilder()
 				.add("start", containerId))
 				.stdout(launcher.getListener().getLogger())
 				.stderr(launcher.getListener().getLogger())
 				.join();
-			} catch (Exception e) {
 
+			if (status != 0) {
+				throw new IOException("Failed to start container");
 			}
 
 			return buildContainer;
 	}
 
 	@Override
-	public void execInContainer(Launcher launcher, String containerId, String commands) {
+	public int execInContainer(Launcher launcher, String containerId, String commands) throws IOException, InterruptedException {
 		ArgumentListBuilder args = new ArgumentListBuilder()
 		.add("exec", containerId)
 		.add("sh", "-c")
 		.add(commands);
 
-		try{
-			launchHyperCLI(launcher, args)
+		int status = launchHyperCLI(launcher, args)
 			.stdout(launcher.getListener().getLogger())
 			.stderr(launcher.getListener().getLogger())
 			.join();
-		} catch (Exception e) {
-			
-		}
+
+		return status;
 	}
 
 	@Override
-	public int removeContainer(Launcher launcher, String containerId) {
+	public int removeContainer(Launcher launcher, String containerId) throws IOException, InterruptedException {
 		ArgumentListBuilder args = new ArgumentListBuilder()
 			.add("rm", "-f", containerId);
 
-			int status = 0;
-			try {
-				status = launchHyperCLI(launcher, args)
-					.stdout(launcher.getListener().getLogger())
-					.stderr(launcher.getListener().getLogger())
-					.join();
-			} catch (Exception e) {
+		int	status = launchHyperCLI(launcher, args)
+				.stdout(launcher.getListener().getLogger())
+				.stderr(launcher.getListener().getLogger())
+				.join();
 
-			}
-
-			return status;
+		return status;
 	}
 
 	public void prependArgs(ArgumentListBuilder args) {
