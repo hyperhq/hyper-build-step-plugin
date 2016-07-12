@@ -25,24 +25,22 @@ import java.io.ByteArrayOutputStream;
  * <p>
  * When the user configures the project and enables this builder,
  * {@link DescriptorImpl#newInstance(StaplerRequest)} is invoked
- * and a new {@link HelloWorldBuilder} is created. The created
+ * and a new {@link HyperBuilder} is created. The created
  * instance is persisted to the project configuration XML by using
- * XStream, so this allows you to use instance fields (like {@link #name})
+ * XStream, so this allows you to use instance fields (like {@link #image})
  * to remember the configuration.
  *
  * <p>
  * When a build is performed, the {@link #perform} method will be invoked. 
- *
- * @author Kohsuke Kawaguchi
  */
-public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
+public class HyperBuilder extends Builder implements SimpleBuildStep {
 
     private final String image;
     private final String commands;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public HelloWorldBuilder(String image, String commands) {
+    public HyperBuilder(String image, String commands) {
         this.image = image;
         this.commands = commands;
     }
@@ -60,19 +58,11 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
 
     @Override
     public void perform(Run<?,?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
-        // This is where you 'build' the project.
-        // Since this is a dummy, we just say 'hello world' and call that a build.
-
-        // This also shows how you can consult the global configuration of the builder
-/*        if (getDescriptor().getUseFrench())
-            listener.getLogger().println("Bonjour, "+name+"!");
-        else
-            listener.getLogger().println("Hello, "+name+"!");*/
         HyperProvisioner provisioner = new HyperProvisioner();
         try {
             provisioner.launchBuildProcess(launcher, listener, image, commands);
         } catch (Exception e) {
-            
+
         }
 
     }
@@ -86,11 +76,11 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
     }
 
     /**
-     * Descriptor for {@link HelloWorldBuilder}. Used as a singleton.
+     * Descriptor for {@link HyperBuilder}. Used as a singleton.
      * The class is marked as public so that it can be accessed from views.
      *
      * <p>
-     * See <tt>src/main/resources/hudson/plugins/hello_world/HelloWorldBuilder/*.jelly</tt>
+     * See <tt>src/main/resources/hudson/plugins/hyper_world/HyperBuilder/*.jelly</tt>
      * for the actual HTML fragment for the configuration screen.
      */
     @Extension // This indicates to Jenkins that this is an implementation of an extension point.
@@ -102,7 +92,6 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
          * <p>
          * If you don't want fields to be persisted, use <tt>transient</tt>.
          */
-        private boolean useFrench;
 
         /**
          * In order to load the persisted global configuration, you have to 
@@ -143,27 +132,6 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
          */
         public String getDisplayName() {
             return "Execute shell in Hyper_";
-        }
-
-        @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-            // To persist global configuration information,
-            // set that to properties and call save().
-            useFrench = formData.getBoolean("useFrench");
-            // ^Can also use req.bindJSON(this, formData);
-            //  (easier when there are many fields; need set* methods for this, like setUseFrench)
-            save();
-            return super.configure(req,formData);
-        }
-
-        /**
-         * This method returns true if the global configuration says we should speak French.
-         *
-         * The method name is bit awkward because global.jelly calls this method to determine
-         * the initial state of the checkbox by the naming convention.
-         */
-        public boolean getUseFrench() {
-            return useFrench;
         }
     }
 }
