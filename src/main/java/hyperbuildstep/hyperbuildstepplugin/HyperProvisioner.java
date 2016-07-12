@@ -13,13 +13,14 @@ public class HyperProvisioner {
 		this.driver = new CliHyperDriver();
 	}
 
-	public void launchBuildProcess(Launcher launcher, TaskListener listener) {
-		launchBuildContainer(launcher, listener);
+	public void launchBuildProcess(Launcher launcher, TaskListener listener, String image, String commands) {
+		ContainerInstance targetContainer = launchBuildContainer(launcher, listener, image);
+
+		driver.execInContainer(launcher, targetContainer.getId(), commands);
 	}
 
-	public void launchBuildContainer(Launcher launcher, TaskListener listener) {
-		ContainerInstance targetContainer = driver.createAndLaunchBuildContainer(launcher, "busybox");
-		
-		driver.execInContainer(launcher, targetContainer.getId());
+	public ContainerInstance launchBuildContainer(Launcher launcher, TaskListener listener, String image) {
+		return driver.createAndLaunchBuildContainer(launcher, image);
+
 	}
 }

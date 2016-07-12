@@ -38,11 +38,13 @@ import java.io.ByteArrayOutputStream;
 public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
 
     private final String image;
+    private final String commands;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public HelloWorldBuilder(String image) {
+    public HelloWorldBuilder(String image, String commands) {
         this.image = image;
+        this.commands = commands;
     }
 
     /**
@@ -50,6 +52,10 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
      */
     public String getImage() {
         return image;
+    }
+
+    public String getCommands() {
+        return commands;
     }
 
     @Override
@@ -63,7 +69,7 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
         else
             listener.getLogger().println("Hello, "+name+"!");*/
         HyperProvisioner provisioner = new HyperProvisioner();
-        provisioner.launchBuildContainer(launcher, listener);
+        provisioner.launchBuildProcess(launcher, listener, image, commands);
 
     }
 

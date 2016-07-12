@@ -36,7 +36,10 @@ public class CliHyperDriver implements HyperDriver {
 
 			try {
 			launchHyperCLI(launcher, new ArgumentListBuilder()
-				.add("start", containerId)).stdout(out).stderr(launcher.getListener().getLogger()).join();
+				.add("start", containerId))
+				.stdout(launcher.getListener().getLogger())
+				.stderr(launcher.getListener().getLogger())
+				.join();
 			} catch (Exception e) {
 
 			}
@@ -45,16 +48,17 @@ public class CliHyperDriver implements HyperDriver {
 	}
 
 	@Override
-	public void execInContainer(Launcher launcher, String containerId) {
-		String command = "echo hello";
+	public void execInContainer(Launcher launcher, String containerId, String commands) {
 		ArgumentListBuilder args = new ArgumentListBuilder()
 		.add("exec", containerId)
-		.add(command);
-
-		Launcher.ProcStarter procStarter = launchHyperCLI(launcher, args);
+		.add("sh", "-c")
+		.add(commands);
 
 		try{
-			procStarter.start();
+			launchHyperCLI(launcher, args)
+			.stdout(launcher.getListener().getLogger())
+			.stderr(launcher.getListener().getLogger())
+			.join();
 		} catch (Exception e) {
 			
 		}
