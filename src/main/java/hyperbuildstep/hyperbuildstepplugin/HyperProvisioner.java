@@ -17,6 +17,8 @@ public class HyperProvisioner {
 		ContainerInstance targetContainer = launchBuildContainer(launcher, listener, image);
 
 		driver.execInContainer(launcher, targetContainer.getId(), commands);
+
+		driver.removeContainer(launcher, targetContainer.getId());
 	}
 
 	public ContainerInstance launchBuildContainer(Launcher launcher, TaskListener listener, String image) {

@@ -7,4 +7,6 @@ public interface HyperDriver {
 	ContainerInstance createAndLaunchBuildContainer(Launcher launcher, String Image);
 
 	void execInContainer(Launcher launcher, String containerId, String commands);
+
+	int removeContainer(Launcher launcher, String containerId);
 }

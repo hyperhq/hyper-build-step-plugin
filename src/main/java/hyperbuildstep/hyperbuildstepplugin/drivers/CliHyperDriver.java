@@ -64,6 +64,24 @@ public class CliHyperDriver implements HyperDriver {
 		}
 	}
 
+	@Override
+	public int removeContainer(Launcher launcher, String containerId) {
+		ArgumentListBuilder args = new ArgumentListBuilder()
+			.add("rm", "-f", containerId);
+
+			int status = 0;
+			try {
+				status = launchHyperCLI(launcher, args)
+					.stdout(launcher.getListener().getLogger())
+					.stderr(launcher.getListener().getLogger())
+					.join();
+			} catch (Exception e) {
+
+			}
+
+			return status;
+	}
+
 	public void prependArgs(ArgumentListBuilder args) {
 		args.prepend("hyper");
 	}
