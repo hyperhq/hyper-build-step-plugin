@@ -70,6 +70,31 @@ public class CliHyperDriver implements HyperDriver {
 		return status;
 	}
 
+    @Override
+    public void pullImage(Launcher launcher, String image) throws IOException, InterruptedException {
+        ArgumentListBuilder args = new ArgumentListBuilder()
+                .add("pull")
+                .add(image);
+
+        int status =  launchHyperCLI(launcher, args)
+                .stdout(launcher.getListener().getLogger()).join();
+
+        if (status != 0) {
+            throw new IOException("Failed to pull image " + image);
+        }
+    }
+
+    @Override
+    public boolean checkImageExists(Launcher launcher, String image) throws IOException, InterruptedException {
+        ArgumentListBuilder args = new ArgumentListBuilder()
+                .add("inspect")
+                .add("-f", "'{{.Id}}'")
+                .add(image);
+
+        return launchHyperCLI(launcher, args)
+                .stdout(launcher.getListener().getLogger()).join() == 0;
+    }
+
 	public void prependArgs(ArgumentListBuilder args) {
 		args.prepend("hyper");
 	}
