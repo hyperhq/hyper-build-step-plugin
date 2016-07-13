@@ -26,7 +26,10 @@ public class HyperProvisioner {
 	}
 
 	public ContainerInstance launchBuildContainer(Launcher launcher, TaskListener listener, String image) throws IOException, InterruptedException {
-		return driver.createAndLaunchBuildContainer(launcher, image);
+		if (!driver.checkImageExists(launcher, image)) {
+			driver.pullImage(launcher, image);
+		}
 
+		return driver.createAndLaunchBuildContainer(launcher, image);
 	}
 }
