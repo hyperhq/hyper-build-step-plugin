@@ -152,11 +152,24 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
                 String jenkinsHome = System.getenv("HUDSON_HOME");
 
                 if (jenkinsHome == null) {
-                    configPath = "./hyper/config.json";
+                    String home = System.getenv("HOME");
+                    configPath = home + "/.hyper/config.json";
+                    File hyperPath = new File(home + "/.hyper");
+                    try {
+                        if (!hyperPath.exists()) {
+                            hyperPath.mkdir();
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     File hyperPath = new File(jenkinsHome +"/.hyper");
-                    if (!hyperPath.exists()) {
-                        hyperPath.mkdir();
+                    try {
+                        if (!hyperPath.exists()) {
+                            hyperPath.mkdir();
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
                     }
                     configPath = jenkinsHome + "/.hyper/config.json";
                 }
@@ -186,7 +199,7 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
                     }
                 }
 
-                return FormValidation.ok("Credentials saved!");
+                return FormValidation.ok("Credentials saved! " + System.getProperty("user.dir"));
             } catch (Exception e) {
                 return FormValidation.error("Saving credentials error : "+e.getMessage());
             }
@@ -204,11 +217,15 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
                 String jenkinsHome = System.getenv("HUDSON_HOME");
 
                 if (jenkinsHome == null) {
-                    hyperCliPath = "./hyper";
+                    hyperCliPath = System.getenv("HOME") + "/hyper";
                 } else {
                     File hyperPath = new File(jenkinsHome +"/bin");
-                    if (!hyperPath.exists()) {
-                        hyperPath.mkdir();
+                    try {
+                        if (!hyperPath.exists()) {
+                            hyperPath.mkdir();
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
                     }
                     hyperCliPath = jenkinsHome + "/bin/hyper";
                 }
