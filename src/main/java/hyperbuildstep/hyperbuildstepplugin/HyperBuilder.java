@@ -199,7 +199,7 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
                     }
                 }
 
-                return FormValidation.ok("Credentials saved! " + System.getProperty("user.dir"));
+                return FormValidation.ok("Credentials saved!");
             } catch (Exception e) {
                 return FormValidation.error("Saving credentials error : "+e.getMessage());
             }
