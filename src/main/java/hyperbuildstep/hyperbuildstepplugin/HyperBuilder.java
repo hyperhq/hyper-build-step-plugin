@@ -147,17 +147,22 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
                         "}" +
                         "}" +
                         "}";
+                BufferedWriter writer = null;
+                String configPath;
                 String jenkinsHome = System.getenv("HUDSON_HOME");
 
-
-                BufferedWriter writer = null;
-
-                File hyperPath = new File(jenkinsHome +"/.hyper");
-                if (!hyperPath.exists()) {
-                    hyperPath.mkdir();
+                if (jenkinsHome == null) {
+                    configPath = "./hyper/config.json";
+                } else {
+                    File hyperPath = new File(jenkinsHome +"/.hyper");
+                    if (!hyperPath.exists()) {
+                        hyperPath.mkdir();
+                    }
+                    configPath = jenkinsHome + "/.hyper/config.json";
                 }
 
-                File config = new File(jenkinsHome + "/.hyper/config.json");
+
+                File config = new File(configPath);
                 if(!config.exists()){
                     try {
                         config.createNewFile();
@@ -191,18 +196,24 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
         public FormValidation doDownloadHypercli() throws IOException, ServletException {
             try {
                 String urlPath = "https://hyper-install.s3.amazonaws.com/hyper";
+                String hyperCliPath;
                 URL url = new URL(urlPath);
                 URLConnection connection = url.openConnection();
                 InputStream in = connection.getInputStream();
 
                 String jenkinsHome = System.getenv("HUDSON_HOME");
 
-                File hyperPath = new File(jenkinsHome +"/bin");
-                if (!hyperPath.exists()) {
-                    hyperPath.mkdir();
+                if (jenkinsHome == null) {
+                    hyperCliPath = "./hyper";
+                } else {
+                    File hyperPath = new File(jenkinsHome +"/bin");
+                    if (!hyperPath.exists()) {
+                        hyperPath.mkdir();
+                    }
+                    hyperCliPath = jenkinsHome + "/bin/hyper";
                 }
 
-                FileOutputStream os = new FileOutputStream(jenkinsHome + "/bin/hyper");
+                FileOutputStream os = new FileOutputStream(hyperCliPath);
                 byte[] buffer = new byte[4 * 1024];
                 int read;
                 while ((read = in.read(buffer)) > 0) {
@@ -212,7 +223,7 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
                 in.close();
 
                 try {
-                    String command = "chmod +x /var/lib/jenkins/hyper";
+                    String command = "chmod +x " + hyperCliPath;
                     Runtime runtime = Runtime.getRuntime();
                     runtime.exec(command);
                 } catch (IOException e) {
