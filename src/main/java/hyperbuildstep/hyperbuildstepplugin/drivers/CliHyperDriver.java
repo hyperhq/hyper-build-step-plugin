@@ -96,7 +96,13 @@ public class CliHyperDriver implements HyperDriver {
     }
 
 	public void prependArgs(ArgumentListBuilder args) {
-		args.prepend("hyper");
+		String hyperCliPath = System.getenv("HOME") + "/hyper";
+
+		if (System.getenv("HUDSON_HOME") != null)  {
+			hyperCliPath = System.getenv("HUDSON_HOME") + "/bin/hyper";
+		}
+
+		args.prepend(hyperCliPath);
 	}
 
 	private Launcher.ProcStarter launchHyperCLI(Launcher launcher, ArgumentListBuilder args) {
