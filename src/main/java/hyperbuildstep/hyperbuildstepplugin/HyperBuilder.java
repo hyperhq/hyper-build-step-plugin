@@ -57,14 +57,10 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
     }
 
     @Override
-    public void perform(Run<?,?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
+    public void perform(Run<?,?> build, FilePath workspace, Launcher launcher, TaskListener listener) 
+        throws IOException, InterruptedException {
         HyperProvisioner provisioner = new HyperProvisioner();
-        try {
-            provisioner.launchBuildProcess(launcher, listener, image, commands);
-        } catch (Exception e) {
-
-        }
-
+        provisioner.launchBuildProcess(launcher, listener, image, commands);
     }
 
     // Overridden for better type safety.
