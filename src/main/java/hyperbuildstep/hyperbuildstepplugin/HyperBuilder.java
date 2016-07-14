@@ -1,4 +1,5 @@
 package hyperbuildstep.hyperbuildstepplugin;
+
 import hudson.Launcher;
 import hudson.Extension;
 import hudson.FilePath;
@@ -16,8 +17,9 @@ import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Sample {@link Builder}.
@@ -132,6 +134,122 @@ public class HyperBuilder extends Builder implements SimpleBuildStep {
          */
         public String getDisplayName() {
             return "Execute shell in Hyper_";
+        }
+
+        //save credential
+        public FormValidation doSaveCredential(@QueryParameter("accessId") final String accessId,
+                                               @QueryParameter("secretKey") final String secretKey) throws IOException, ServletException {
+            try {
+                String jsonStr = "{\"clouds\": {" +
+                        "\"tcp://us-west-1.hyper.sh:443\": {" +
+                        "\"accesskey\": " + "\"" + accessId + "\"," +
+                        "\"secretkey\": " + "\"" + secretKey + "\"" +
+                        "}" +
+                        "}" +
+                        "}";
+                BufferedWriter writer = null;
+                String configPath;
+                String jenkinsHome = System.getenv("HUDSON_HOME");
+
+                if (jenkinsHome == null) {
+                    String home = System.getenv("HOME");
+                    configPath = home + "/.hyper/config.json";
+                    File hyperPath = new File(home + "/.hyper");
+                    try {
+                        if (!hyperPath.exists()) {
+                            hyperPath.mkdir();
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    File hyperPath = new File(jenkinsHome +"/.hyper");
+                    try {
+                        if (!hyperPath.exists()) {
+                            hyperPath.mkdir();
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
+                    configPath = jenkinsHome + "/.hyper/config.json";
+                }
+
+
+                File config = new File(configPath);
+                if(!config.exists()){
+                    try {
+                        config.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                try {
+                    writer = new BufferedWriter(new FileWriter(config));
+                    writer.write(jsonStr);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
+                    try {
+                        if(writer != null){
+                            writer.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                return FormValidation.ok("Credentials saved!");
+            } catch (Exception e) {
+                return FormValidation.error("Saving credentials error : "+e.getMessage());
+            }
+        }
+
+        //download Hypercli
+        public FormValidation doDownloadHypercli() throws IOException, ServletException {
+            try {
+                String urlPath = "https://hyper-install.s3.amazonaws.com/hyper";
+                String hyperCliPath;
+                URL url = new URL(urlPath);
+                URLConnection connection = url.openConnection();
+                InputStream in = connection.getInputStream();
+
+                String jenkinsHome = System.getenv("HUDSON_HOME");
+
+                if (jenkinsHome == null) {
+                    hyperCliPath = System.getenv("HOME") + "/hyper";
+                } else {
+                    File hyperPath = new File(jenkinsHome +"/bin");
+                    try {
+                        if (!hyperPath.exists()) {
+                            hyperPath.mkdir();
+                        }
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
+                    hyperCliPath = jenkinsHome + "/bin/hyper";
+                }
+
+                FileOutputStream os = new FileOutputStream(hyperCliPath);
+                byte[] buffer = new byte[4 * 1024];
+                int read;
+                while ((read = in.read(buffer)) > 0) {
+                    os.write(buffer, 0, read);
+                }
+                os.close();
+                in.close();
+
+                try {
+                    String command = "chmod +x " + hyperCliPath;
+                    Runtime runtime = Runtime.getRuntime();
+                    runtime.exec(command);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return FormValidation.ok("Hypercli downloaded!");
+            } catch (Exception e) {
+                return FormValidation.error("Downloading Hypercli error : "+e.getMessage());
+            }
         }
     }
 }
