@@ -95,7 +95,7 @@ $ mvn test
 
 ## Package
 
-> **output**: target/hyper-build-step-plugin.hpi
+> **output**: target/hyper-build-step.hpi
 
 compile + test + package
 
@@ -108,7 +108,7 @@ $ mvn package -DskipTests
 
 ## Install
 
-> **target**: ~/.m2/repository/hyper-build-step/hyper-build-step-plugin/1.0-SNAPSHOT/hyper-build-step-plugin-1.0-SNAPSHOT.hpi
+> **target**: /.m2/repository/sh/hyper/jenkins/hyper-build-step/0.1.0/hyper-build-step-0.1.0.hpi
 
 compile + test + package + install
 

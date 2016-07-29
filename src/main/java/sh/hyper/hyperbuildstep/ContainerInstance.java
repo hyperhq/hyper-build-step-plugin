@@ -1,4 +1,4 @@
-package hyperbuildstep.hyperbuildstepplugin;
+package sh.hyper.hyperbuildstep;
 
 public class ContainerInstance {
 	String id;

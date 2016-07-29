@@ -1,9 +1,8 @@
-package hyperbuildstep.hyperbuildstepplugin.drivers;
+package sh.hyper.hyperbuildstep.drivers;
 
 import hudson.Launcher;
-import hudson.Proc;
-import hyperbuildstep.hyperbuildstepplugin.HyperDriver;
-import hyperbuildstep.hyperbuildstepplugin.ContainerInstance;
+import sh.hyper.hyperbuildstep.HyperDriver;
+import sh.hyper.hyperbuildstep.ContainerInstance;
 import hudson.util.ArgumentListBuilder;
 
 import java.io.ByteArrayOutputStream;

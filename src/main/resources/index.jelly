@@ -3,5 +3,5 @@
   This view is used to render the installed plugins page.
 -->
 <div>
-  This plugin allows to add various docker commands to your job as build steps, download Hypercli and config credentials.
+  This plugin allows to add "Execute shell in Hyper_" to your job as build steps, download hyper cli and config credentials.
 </div>

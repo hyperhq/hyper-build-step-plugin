@@ -1,8 +1,7 @@
-package hyperbuildstep.hyperbuildstepplugin;
+package sh.hyper.hyperbuildstep;
 
-import hyperbuildstep.hyperbuildstepplugin.drivers.CliHyperDriver;
+import sh.hyper.hyperbuildstep.drivers.CliHyperDriver;
 import hudson.Launcher;
-import hudson.Proc;
 import hudson.model.TaskListener;
 
 import java.io.IOException;

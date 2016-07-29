@@ -1,4 +1,4 @@
-package hyperbuildstep.hyperbuildstepplugin;
+package sh.hyper.hyperbuildstep;
 
 import hudson.Launcher;
 import hudson.Extension;

@@ -1,7 +1,6 @@
-package hyperbuildstep.hyperbuildstepplugin;
+package sh.hyper.hyperbuildstep;
 
 import hudson.Launcher;
-import hyperbuildstep.hyperbuildstepplugin.ContainerInstance;
 
 import java.io.IOException;
 
