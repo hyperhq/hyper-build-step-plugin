@@ -9,7 +9,6 @@ This plugin allows to add "Execute shell in Hyper_" build step into your job.
 - [Use plugin](#use-plugin)
 	- [Prerequisites](#prerequisites)
 	- [Install plugin by manually](#install-plugin-by-manually)
-	- [Config plugin](#config-plugin)
 	- [Config job](#config-job)
 	- [View build result](#view-build-result)
 - [Build plugin](#build-plugin)
@@ -40,15 +39,6 @@ Manage Jenkins -> Manage Plugins -> Advanced -> Upload Plugin
 ```
 
 ![](images/upload-plugin.PNG)
-
-## Config plugin
-
-login https://console.hyper.sh to get a `Hyper_ credential`.
-
-```
-Manage Jenkins -> Configure System -> Hyper Install And Config
-```
-![](images/config-plugin.PNG)
 
 ## Config job
 
