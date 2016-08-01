@@ -21,14 +21,6 @@ This plugin allows to add "Execute shell in Hyper_" build step into your job.
 
 <!-- /TOC -->
 
-# Features
-Plugin currently support following features:
-
-- Install hyper cli
-- Set Hyper_ credentials
-- Add build step "Execute shell in Hyper_" into job
-
-
 # Use plugin
 
 ## Prerequisites
