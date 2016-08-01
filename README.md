@@ -5,7 +5,6 @@ This plugin allows to add "Execute shell in Hyper_" build step into your job(rel
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Features](#features)
 - [Use plugin](#use-plugin)
 	- [Prerequisites](#prerequisites)
 	- [Install plugin by manually](#install-plugin-by-manually)
