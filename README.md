@@ -1,7 +1,7 @@
 hyper-build-step-plugin
 =======================
 
-This plugin allows to add "Execute shell in Hyper_" build step into your job.
+This plugin allows to add "Execute shell in Hyper_" build step into your job(rely on hyper-commons-plugin).
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
