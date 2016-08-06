@@ -1,6 +1,7 @@
 package sh.hyper.hyperbuildstep.drivers;
 
 import hudson.Launcher;
+import jenkins.model.Jenkins;
 import sh.hyper.hyperbuildstep.HyperDriver;
 import sh.hyper.hyperbuildstep.ContainerInstance;
 import hudson.util.ArgumentListBuilder;
@@ -95,12 +96,11 @@ public class CliHyperDriver implements HyperDriver {
     }
 
 	public void prependArgs(ArgumentListBuilder args) {
-		String hyperCliPath = System.getenv("HOME") + "/hyper";
-
-		if (System.getenv("HUDSON_HOME") != null)  {
-			hyperCliPath = System.getenv("HUDSON_HOME") + "/bin/hyper";
-		}
-
+		String jenkinsHome = Jenkins.getInstance().getRootDir().getPath();
+		String hyperCliPath = jenkinsHome + "/bin/hyper";
+		String configPath = jenkinsHome + "/.hyper";
+		args.prepend(configPath);
+		args.prepend("--config");
 		args.prepend(hyperCliPath);
 	}
 

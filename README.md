@@ -1,13 +1,15 @@
 hyper-build-step-plugin
 =======================
 
-This plugin allows to add "Execute shell in Hyper_" build step into your job(rely on hyper-commons-plugin).
+Run jenkins job in Hyper_ container.
+This plugin allows to add "Execute shell in Hyper_" build step into your job.
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Use plugin](#use-plugin)
 	- [Prerequisites](#prerequisites)
 	- [Install plugin by manually](#install-plugin-by-manually)
+	- [Config Hyper_](#config-hyper)
 	- [Config job](#config-job)
 	- [View build result](#view-build-result)
 - [Build plugin](#build-plugin)
@@ -24,8 +26,7 @@ This plugin allows to add "Execute shell in Hyper_" build step into your job(rel
 ## Prerequisites
 
 - Jenkins
-- hyper-build-step-plugin.hpi
-- Hyper_ credential
+- [hyper-commons-plugin](https://github.com/hyperhq/hyper-commons-plugin)
 
 ## Install plugin by manually
 
@@ -38,6 +39,22 @@ Manage Jenkins -> Manage Plugins -> Advanced -> Upload Plugin
 ```
 
 ![](images/upload-plugin.PNG)
+
+
+## Config Hyper_
+
+- install `hyper-commons-plugin` first
+- login https://console.hyper.sh, then create credentials.
+
+```
+Config -> Configure System
+  -> Hyper Config : set AccessKey and SecretKey
+  -> Test connection
+  -> Download Hypercli
+```
+
+![](images/config-hyper-commons-plugin.PNG)
+
 
 ## Config job
 
@@ -88,8 +105,6 @@ $ mvn package -DskipTests
 ```
 
 ## Install
-
-> **target**: /.m2/repository/sh/hyper/jenkins/hyper-build-step/0.1.0/hyper-build-step-0.1.0.hpi
 
 compile + test + package + install
 
