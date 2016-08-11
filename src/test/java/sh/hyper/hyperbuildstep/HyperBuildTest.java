@@ -27,7 +27,7 @@ package sh.hyper.hyperbuildstep;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HyperTest {
+public class HyperBuildTest {
     @Test
     public void testSomething() throws Exception {
         Assert.assertTrue(true);
