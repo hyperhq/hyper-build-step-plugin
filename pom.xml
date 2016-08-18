@@ -16,7 +16,7 @@
 
     <properties>
         <jenkins.version>2.7.2</jenkins.version>
-        <java.level>7</java.level>
+        <java.level>8</java.level>
         <jenkins-test-harness.version>2.14</jenkins-test-harness.version>
     </properties>
 
@@ -49,13 +49,13 @@
         </developer>
     </developers>
 
-    <!-- Assuming you want to host on @jenkinsci:
     <scm>
-      <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
-      <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
-      <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
+      <connection>scm:git:git://github.com/jenkinsci/hyper-build-step-plugin.git</connection>
+      <developerConnection>scm:git:git@github.com:jenkinsci/hyper-build-step-plugin.git</developerConnection>
+      <url>https://github.com/jenkinsci/hyper-build-step-plugin</url>
+      <tag>HEAD</tag>
     </scm>
-     -->
+     
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
@@ -68,14 +68,13 @@
             <url>http://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
-    <!-- If you want to depend on other plugins:
+
     <dependencies>
       <dependency>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>credentials</artifactId>
-        <version>1.9.4</version>
+        <groupId>sh.hyper.plugins</groupId>
+        <artifactId>hyper-commons</artifactId>
+        <version>0.1.0</version>
       </dependency>
     </dependencies>
-    -->
-
+    
 </project>
