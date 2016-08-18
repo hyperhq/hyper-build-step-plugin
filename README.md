@@ -3,8 +3,9 @@ hyper-build-step-plugin
 
 [![Build Status](https://travis-ci.org/hyperhq/hyper-build-step-plugin.svg?branch=master)](https://travis-ci.org/hyperhq/hyper-build-step-plugin)
 
-Run jenkins job in Hyper_ container.
+Run some tasks of Jenkins job in [Hyper_](https://hyper.sh) container.
 This plugin allows to add "Execute shell in Hyper_" build step into your job.
+
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -28,13 +29,11 @@ This plugin allows to add "Execute shell in Hyper_" build step into your job.
 ## Prerequisites
 
 - Jenkins
-- [hyper-commons-plugin](https://github.com/hyperhq/hyper-commons-plugin)
+- [hyper-commons-plugin](https://github.com/jenkinsci/hyper-commons-plugin)
 
 ## Install plugin by manually
 
 open Jenkins Web UI in web browser
-
-get pre-build `hyper-build-step-plugin.hpi` [here](target/hyper-build-step-plugin.hpi)
 
 ```
 Manage Jenkins -> Manage Plugins -> Advanced -> Upload Plugin
@@ -77,7 +76,7 @@ Config -> Build -> Execute shell in Hyper_
 
 ## Prerequisites
 
-- java 1.7+
+- java 1.8+
 - maven 3+
 
 ## Compile
