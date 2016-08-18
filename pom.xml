@@ -52,7 +52,8 @@
     <scm>
       <connection>scm:git:git://github.com/jenkinsci/hyper-build-step-plugin.git</connection>
       <developerConnection>scm:git:git@github.com:jenkinsci/hyper-build-step-plugin.git</developerConnection>
-      <url>http://github.com/jenkinsci/hyper-build-step-plugin</url>
+      <url>https://github.com/jenkinsci/hyper-build-step-plugin</url>
+      <tag>HEAD</tag>
     </scm>
      
     <repositories>
