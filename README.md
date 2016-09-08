@@ -1,3 +1,6 @@
+#Deprecated
+Moved to https://github.com/jenkinsci/hyper-build-step-plugin
+
 hyper-build-step-plugin
 =======================
 
